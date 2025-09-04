@@ -85,7 +85,7 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">Your name (optional)</label>
                     <input type="text" id="name" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#5C5E3B] focus:ring-[#5C5E3B] text-[#5C5E3B]">
                 </div>
-                <button type="submit" id="feedback-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate" disabled>Connecting...</button>
+                <button type="submit" id="feedback-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate">Submit Feedback</button>
             </form>
             <p class="mt-4 text-xs text-gray-500 text-center">Your data is important to us. We will only use this information to help us improve future exhibitions.</p>
         </section>
@@ -109,7 +109,7 @@
                     <input id="contact-consent" name="contact-consent" type="checkbox" class="h-4 w-4 text-[#5C5E3B] rounded border-gray-300 focus:ring-[#5C5E3B]">
                     <label for="contact-consent" class="ml-2 block text-sm text-gray-700">I would like to receive updates from Heartseedling.</label>
                 </div>
-                <button type="submit" id="guess-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate" disabled>Connecting...</button>
+                <button type="submit" id="guess-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate">Submit Guess</button>
             </form>
             
             <div class="mt-8">
@@ -135,7 +135,7 @@
                     <label for="interview-email" class="block text-sm font-medium text-gray-700">Email Address</label>
                     <input type="email" id="interview-email" name="interview-email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#5C5E3B] focus:ring-[#5C5E3B] text-[#5C5E3B]">
                 </div>
-                <button type="submit" id="interview-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate" disabled>Connecting...</button>
+                <button type="submit" id="interview-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate">I'm Happy to Share</button>
             </form>
         </section>
 
@@ -166,21 +166,17 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Initialization
-        const firebaseConfig = JSON.parse(__firebase_config);
+        // Firebase Configuration - automatically provided by the environment
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        setLogLevel('Debug');
-
+        let app, db, auth;
         let userId = null;
         let isAuthReady = false;
         let lastFocusedElement = null;
-        
+
+        // Message Box Functions
         function showMessageBox(message) {
             lastFocusedElement = document.activeElement;
             const messageBox = document.getElementById('message-box');
@@ -205,49 +201,46 @@
             }
         }
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                userId = user.uid;
-                console.log("Existing user signed in:", userId);
-            } else {
-                try {
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                        console.log("Signed in with custom token.");
-                    } else {
-                        await signInAnonymously(auth);
-                        console.log("Signed in anonymously.");
+        // Initialize Firebase and Authentication
+        try {
+            if (Object.keys(firebaseConfig).length === 0) {
+                throw new Error("Firebase configuration is missing. This app can only run in a Canvas environment.");
+            }
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            setLogLevel('Debug');
+
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (error) {
+                        console.error("Authentication failed:", error);
+                        showMessageBox("Authentication failed. Please check your network connection and try again.");
+                        return;
                     }
-                    userId = auth.currentUser.uid;
-                } catch (error) {
-                    console.error("Authentication failed:", error);
-                    if (error.code === 'auth/network-request-failed') {
-                        showMessageBox("Connection failed. Please check your internet connection and try again.");
-                    } else {
-                        showMessageBox("Authentication failed. Please try again or contact support.");
-                    }
-                    return;
                 }
-            }
-            isAuthReady = true;
-            console.log("Authentication state changed. User ID:", userId);
-            
-            // Enable buttons once authentication is ready
-            document.getElementById('feedback-submit-btn').disabled = false;
-            document.getElementById('feedback-submit-btn').textContent = "Submit Feedback";
-            document.getElementById('guess-submit-btn').disabled = false;
-            document.getElementById('guess-submit-btn').textContent = "Submit Guess";
-            document.getElementById('interview-submit-btn').disabled = false;
-            document.getElementById('interview-submit-btn').textContent = "I'm Happy to Share";
+                userId = auth.currentUser.uid;
+                isAuthReady = true;
+                console.log("Authentication successful. User ID:", userId);
 
-            if (isAuthReady) {
+                // Setup realtime listeners and enable forms
                 setupRealtimeGuessListener();
-            }
-        });
+            });
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            showMessageBox("Error: Could not connect to the database. This application is not configured to run outside of the Canvas environment.");
+        }
 
+        // Form Submission Logic
         document.getElementById('feedback-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!isAuthReady || !userId) {
+            if (!isAuthReady || !db) {
                 showMessageBox("Please wait, connecting to the database...");
                 return;
             }
@@ -275,7 +268,7 @@
 
         document.getElementById('guess-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!isAuthReady || !userId) {
+            if (!isAuthReady || !db) {
                 showMessageBox("Please wait, connecting to the database...");
                 return;
             }
@@ -301,7 +294,7 @@
 
         document.getElementById('interview-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!isAuthReady || !userId) {
+            if (!isAuthReady || !db) {
                 showMessageBox("Please wait, connecting to the database...");
                 return;
             }
@@ -321,9 +314,14 @@
                 showMessageBox("There was an error submitting your nomination. Please try again.");
             }
         });
-        
+
+        // Real-time listener for the "Recent Guesses" section
         function setupRealtimeGuessListener() {
             const guessList = document.getElementById('guess-list');
+            if (!db) {
+                console.error("Database not initialized, cannot set up listener.");
+                return;
+            }
             const q = query(collection(db, `artifacts/${appId}/public/data/tomato-guesses`));
             onSnapshot(q, (querySnapshot) => {
                 const guesses = [];
@@ -353,4 +351,3 @@
     </script>
 </body>
 </html>
-             
