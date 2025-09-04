@@ -37,7 +37,6 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
-        /* New CSS for button hover effects */
         .btn-animate {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
@@ -45,7 +44,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        /* New CSS for fade-in animation on list items */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -67,9 +65,7 @@
     <div class="max-w-4xl mx-auto space-y-12">
         <header class="text-center mb-12">
             <div class="flex flex-col items-center mx-auto">
-                <!-- The main exhibition title -->
                 <h1 class="text-4xl md:text-5xl font-extrabold text-[#f7f7f7] tracking-tight mt-4">The Tomato House</h1>
-                <!-- The subtitle explaining the page's purpose -->
                 <p class="mt-2 text-2xl text-gray-300">Visitor Feedback Hub</p>
             </div>
         </header>
@@ -78,7 +74,7 @@
         <section class="bg-[#f7f7f7] rounded-2xl p-6 md:p-8 shadow-xl">
             <h2 class="text-2xl font-bold text-[#5C5E3B] mb-4">Tell us what you thought!</h2>
             <p class="text-gray-600 mb-6">
-                Thank you for visiting - we'd love to hear what you enjoyed most and what brilliant ideas you have for future events and exhibitions. Your insights will help us grow!
+                Your insights will help us grow! We'd love to hear what you enjoyed most and what brilliant ideas you have for our future events and exhibitions.
             </p>
             <form id="feedback-form" class="space-y-4">
                 <div>
@@ -89,7 +85,7 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">Your name (optional)</label>
                     <input type="text" id="name" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#5C5E3B] focus:ring-[#5C5E3B] text-[#5C5E3B]">
                 </div>
-                <button type="submit" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate">Submit Feedback</button>
+                <button type="submit" id="feedback-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate" disabled>Connecting...</button>
             </form>
             <p class="mt-4 text-xs text-gray-500 text-center">Your data is important to us. We will only use this information to help us improve future exhibitions.</p>
         </section>
@@ -98,7 +94,7 @@
         <section class="bg-[#f7f7f7] rounded-2xl p-6 md:p-8 shadow-xl">
             <h2 class="text-2xl font-bold text-[#5C5E3B] mb-4">Guess the Tomatoes!</h2>
             <p class="text-gray-600 mb-6">
-                How many tomatoes are in the mini greenhouse? Take a guess! The person with the closest guess wins a wonderful Heirloom Tomato Kit.
+                How many tomatoes are in the mini greenhouse? Take a guess! The person with the closest guess wins an Heirloom Tomato Kit.
             </p>
             <form id="guess-form" class="space-y-4">
                 <div>
@@ -113,7 +109,7 @@
                     <input id="contact-consent" name="contact-consent" type="checkbox" class="h-4 w-4 text-[#5C5E3B] rounded border-gray-300 focus:ring-[#5C5E3B]">
                     <label for="contact-consent" class="ml-2 block text-sm text-gray-700">I would like to receive updates from Heartseedling.</label>
                 </div>
-                <button type="submit" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate">Submit Guess</button>
+                <button type="submit" id="guess-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate" disabled>Connecting...</button>
             </form>
             
             <div class="mt-8">
@@ -139,11 +135,11 @@
                     <label for="interview-email" class="block text-sm font-medium text-gray-700">Email Address</label>
                     <input type="email" id="interview-email" name="interview-email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#5C5E3B] focus:ring-[#5C5E3B] text-[#5C5E3B]">
                 </div>
-                <button type="submit" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate">I'm Happy to Share</button>
+                <button type="submit" id="interview-submit-btn" class="w-full px-6 py-3 bg-[#5C5E3B] text-white font-semibold rounded-full shadow-lg hover:bg-[#4a4c2e] transition-colors btn-animate" disabled>Connecting...</button>
             </form>
         </section>
 
-        <!-- New: Exhibition Story Section -->
+        <!-- Exhibition Story Section -->
         <section class="bg-[#f7f7f7] rounded-2xl p-6 md:p-8 shadow-xl">
             <h2 class="text-2xl font-bold text-[#5C5E3B] mb-4">The Heartseedling Story</h2>
             <div class="md:flex md:space-x-8 items-stretch">
@@ -156,7 +152,6 @@
                     </p>
                 </div>
                 <div class="md:w-1/2 flex items-center justify-center rounded-2xl shadow-lg bg-[#5C5E3B]">
-                    <!-- This SVG creates the dark green box with the word 'Heartseedling' -->
                     <svg width="100%" height="100%" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
                         <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="24" font-weight="400" fill="#f7f7f7">Heartseedling</text>
                     </svg>
@@ -174,18 +169,18 @@
         // Firebase Initialization
         const firebaseConfig = JSON.parse(__firebase_config);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Enable Firestore debug logging
         setLogLevel('Debug');
 
         let userId = null;
         let isAuthReady = false;
         let lastFocusedElement = null;
         
-        // Function to show the custom message box
         function showMessageBox(message) {
             lastFocusedElement = document.activeElement;
             const messageBox = document.getElementById('message-box');
@@ -195,37 +190,29 @@
             messageBox.style.display = 'block';
             messageBox.setAttribute('aria-hidden', 'false');
             messageOverlay.style.display = 'block';
-            
-            // Set focus to the close button for accessibility
             document.getElementById('message-box-close-btn').focus();
         }
 
-        // Function to hide the custom message box
         function hideMessageBox() {
             const messageBox = document.getElementById('message-box');
             const messageOverlay = document.getElementById('message-box-overlay');
             messageBox.style.display = 'none';
             messageBox.setAttribute('aria-hidden', 'true');
             messageOverlay.style.display = 'none';
-
-            // Return focus to the last element that was focused
             if (lastFocusedElement) {
                 lastFocusedElement.focus();
                 lastFocusedElement = null;
             }
         }
 
-        // Authentication and Firestore Setup
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // User is already signed in.
                 userId = user.uid;
                 console.log("Existing user signed in:", userId);
             } else {
-                // No user is signed in, use the provided token or sign in anonymously.
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
                         console.log("Signed in with custom token.");
                     } else {
                         await signInAnonymously(auth);
@@ -234,38 +221,46 @@
                     userId = auth.currentUser.uid;
                 } catch (error) {
                     console.error("Authentication failed:", error);
-                    showMessageBox("Authentication failed. Please check your connection.");
+                    if (error.code === 'auth/network-request-failed') {
+                        showMessageBox("Connection failed. Please check your internet connection and try again.");
+                    } else {
+                        showMessageBox("Authentication failed. Please try again or contact support.");
+                    }
                     return;
                 }
             }
             isAuthReady = true;
             console.log("Authentication state changed. User ID:", userId);
+            
+            // Enable buttons once authentication is ready
+            document.getElementById('feedback-submit-btn').disabled = false;
+            document.getElementById('feedback-submit-btn').textContent = "Submit Feedback";
+            document.getElementById('guess-submit-btn').disabled = false;
+            document.getElementById('guess-submit-btn').textContent = "Submit Guess";
+            document.getElementById('interview-submit-btn').disabled = false;
+            document.getElementById('interview-submit-btn').textContent = "I'm Happy to Share";
 
             if (isAuthReady) {
                 setupRealtimeGuessListener();
             }
         });
 
-        // Event listener for the General Feedback Form
         document.getElementById('feedback-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!isAuthReady || !userId) {
                 showMessageBox("Please wait, connecting to the database...");
                 return;
             }
-
             const feedback = document.getElementById('feedback').value;
             const name = document.getElementById('name').value;
-
             if (!feedback.trim()) {
                 showMessageBox("Please enter your feedback before submitting.");
                 return;
             }
-
             try {
-                // Save feedback to a public collection
                 const feedbackCollectionRef = collection(db, `artifacts/${appId}/public/data/exhibition-feedback`);
                 await addDoc(feedbackCollectionRef, {
+                    userId: userId,
                     name: name || "Anonymous",
                     feedback: feedback,
                     timestamp: new Date()
@@ -278,20 +273,16 @@
             }
         });
 
-        // Event listener for the Guessing Game Form
         document.getElementById('guess-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!isAuthReady || !userId) {
                 showMessageBox("Please wait, connecting to the database...");
                 return;
             }
-
             const guess = document.getElementById('guess').value;
             const email = document.getElementById('email').value;
             const consent = document.getElementById('contact-consent').checked;
-
             try {
-                // Save guess data to a public collection
                 const guessCollectionRef = collection(db, `artifacts/${appId}/public/data/tomato-guesses`);
                 await addDoc(guessCollectionRef, {
                     userId: userId,
@@ -308,20 +299,16 @@
             }
         });
 
-        // Event listener for the Interview Nomination Form
         document.getElementById('interview-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!isAuthReady || !userId) {
                 showMessageBox("Please wait, connecting to the database...");
                 return;
             }
-
             const name = document.getElementById('interview-name').value;
             const email = document.getElementById('interview-email').value;
-
             try {
-                // Save nomination to a private collection
-                const nominationCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/interview-nominations`);
+                const nominationCollectionRef = collection(db, `artifacts/${appId}/public/data/interview-nominations`);
                 await addDoc(nominationCollectionRef, {
                     name: name,
                     email: email,
@@ -335,29 +322,24 @@
             }
         });
         
-        // Function to set up a real-time listener for the tomato guesses
         function setupRealtimeGuessListener() {
             const guessList = document.getElementById('guess-list');
             const q = query(collection(db, `artifacts/${appId}/public/data/tomato-guesses`));
-            
             onSnapshot(q, (querySnapshot) => {
                 const guesses = [];
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     guesses.push({ id: doc.id, ...data });
                 });
-
-                // Sort guesses by timestamp in descending order and show the top 5
                 guesses.sort((a, b) => b.timestamp - a.timestamp);
                 const recentGuesses = guesses.slice(0, 5);
-                
                 guessList.innerHTML = '';
                 if (recentGuesses.length > 0) {
                     recentGuesses.forEach(guess => {
                         const li = document.createElement('li');
                         li.textContent = `Someone guessed: ${guess.guess}`;
-                        li.classList.add('text-[#5C5E3B]'); // Ensure text color is right on the light background
-                        li.classList.add('fade-in'); // Add fade-in animation
+                        li.classList.add('text-[#5C5E3B]');
+                        li.classList.add('fade-in');
                         guessList.appendChild(li);
                     });
                 } else {
@@ -368,7 +350,7 @@
                 guessList.innerHTML = '<li class="text-center text-red-500">Error loading guesses.</li>';
             });
         }
-
     </script>
 </body>
 </html>
+             
